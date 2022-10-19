@@ -37,9 +37,8 @@ function addMsg(msg) {
     let name     = document.createElement("div");
     let span     = document.createElement("span") ;
 
-    li  .class = "me"  ;
-    name.class = "name";
-    span.class = ""    ;
+    li  .setAttribute("class","me"  );
+    name.setAttribute("class","name");
 
     span.innerHTML = msg.userId ;
 
@@ -53,15 +52,15 @@ function addMsg(msg) {
     let time    = document.createElement("span");
     let p       = document.createElement("p");
 
-    time.class    = "msg-time" ;
-    message.class = "message" ;
+    time.setAttribute("class", "msg-time")
+    message.setAttribute("class","message") ;
 
     p.innerText    = msg.messageText ;
     time.innerText = msg.hour ;
 
     message .appendChild(p);
     message .appendChild(time);
-    chatList.appendChild(message);
+    li.appendChild(message);
     /*
     let newElement = document.createElement("li") ;
 
