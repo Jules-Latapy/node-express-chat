@@ -1,3 +1,88 @@
+const server = 'http://localhost:3000';
+
+function sendMsg() {
+
+    let text = document.getElementById('message').value ;
+
+    let dt = new Date ;
+
+    let hour = "" + dt.getHours() +"h"+ dt.getMinutes();
+
+    let msg = { 
+            userId:"no",
+            hour  : ""+hour,
+            messageText : ""+text
+        };
+
+    console.log(msg);
+
+    fetch(`${server}/message/`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: msg
+    });
+
+    addMsg(msg)
+}
+
+function addMsg(msg) {
+
+    //first part
+
+    let chatList = document.getElementById('toFill') ;
+    let li       = document.createElement("li");
+    let name     = document.createElement("div");
+    let span     = document.createElement("span") ;
+
+    li  .class = "me"  ;
+    name.class = "name";
+    span.class = ""    ;
+
+    span.innerHTML = msg.userId ;
+
+    name    .appendChild(span);
+    li      .appendChild(name);
+    chatList.appendChild(li  );
+
+    //second part
+
+    let message = document.createElement("div" );
+    let time    = document.createElement("span");
+    let p       = document.createElement("p");
+
+    time.class    = "msg-time" ;
+    message.class = "message" ;
+
+    p.innerText    = msg.messageText ;
+    time.innerText = msg.hour ;
+
+    message .appendChild(p);
+    message .appendChild(time);
+    chatList.appendChild(message);
+    /*
+    let newElement = document.createElement("li") ;
+
+    newElement.class = "me"
+
+    newElement.appendChild(document.createElement("div"))
+
+    containement.appendChild(newElement);*/
+
+
+    `<li class="me">
+        <div class="name">
+            <span class="">John Doe</span>
+        </div>
+        <div class="message">
+            <p>Hello</p>
+            <span class="msg-time">5:00 pm</span>
+        </div>
+    </li>`
+}
+
 (function () {
     const server = 'http://127.0.0.1:3000'
     const socket = io(server);
