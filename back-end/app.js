@@ -1,5 +1,8 @@
 require('dotenv').config();
 const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const app = express();
 
 // export one function that gets called once as the server is being initialized
 module.exports = function (app, server) {
@@ -28,3 +31,9 @@ module.exports = function (app, server) {
         res.status(200).json({ hello: 'world' })
     })
 }
+
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_URL}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+  { useNewUrlParser: true,
+    useUnifiedTopology: true })
+  .then (() => console.log('DB is OK' ))
+  .catch(() => console.log('DB failed'));
