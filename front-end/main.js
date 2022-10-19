@@ -12,7 +12,7 @@ function sendMsg() {
             userId:"no",
             hour  : ""+hour,
             messageText : ""+text
-        };
+    };
 
     console.log(msg);
 
@@ -61,14 +61,6 @@ function addMsg(msg) {
     message .appendChild(p);
     message .appendChild(time);
     li.appendChild(message);
-    /*
-    let newElement = document.createElement("li") ;
-
-    newElement.class = "me"
-
-    newElement.appendChild(document.createElement("div"))
-
-    containement.appendChild(newElement);*/
 
 
     `<li class="me">
@@ -82,17 +74,6 @@ function addMsg(msg) {
     </li>`
 }
 
-function loadMsg() {
-
-    fetch(`${server}/messages/`, {
-        method: "GET",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(msg)
-    });
-}
 
 (function () {
     const server = 'http://127.0.0.1:3000'
@@ -105,9 +86,9 @@ function loadMsg() {
     fetch(`${server}/messages`).then((res) => {
         return res.json()
     }).then((data) => {
-        console.log(data);
+        //console.log(Object.getOwnPropertyNames(data[0]))
 
-        for (let i in data.data)
+        for (let i of data)
             addMsg(i);
     })
 })()
