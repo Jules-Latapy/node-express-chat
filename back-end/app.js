@@ -18,26 +18,18 @@ module.exports = function (app, server) {
 
     app.use(express.json());
 
-    const io = require('socket.io')(server, {
-        cors: {
-            origin: "http://127.0.0.1:5000",
-            methods: ["GET", "POST", "PUT"]
-        }
-    })
-
-    require('./socket/chat')(io);
 
     app.use(function (req, res, next) { req.io = io; next(); });
 
     app.get('/users', (req, res, next) => {
         sUser.find()
-        .then(buckets => res.status(200).json(buckets))
+        .then(user => res.status(200).json(user))
         .catch(error => res.status(400).json({ error }));
     })
 
     app.get('/users/:id', (req, res, next) => {
         sMessage.findOne({ _id: req.params.id })
-        .then(buckets => res.status(200).json(buckets))
+        .then(user => res.status(200).json(user))
         .catch(error => res.status(400).json({ error }));
       });
 
@@ -62,13 +54,13 @@ module.exports = function (app, server) {
 
       app.get('/messages', (req, res, next) => {
         sMessage.find()
-        .then(buckets => res.status(200).json(buckets))
+        .then(user => res.status(200).json(user))
         .catch(error => res.status(400).json({ error }));
       });
 
       app.get('/messages/:id', (req, res, next) => {
         sMessage.findOne({ _id: req.params.id })
-        .then(buckets => res.status(200).json(buckets))
+        .then(user => res.status(200).json(user))
         .catch(error => res.status(400).json({ error }));
       });
 
@@ -89,6 +81,30 @@ module.exports = function (app, server) {
         sMessage.remove({ _id: req.params.id }, { ...req.body, _id: req.params.id })
           .then(() => res.status(200).json({ message: 'Message Supprimé'}))
           .catch(error => res.status(400).json({ error }));
+      })
+
+      const io = require('socket.io')(server, {
+        cors: {
+          origin: "http://127.0.0.1:5501",
+          methods: ["GET", "POST"]
+        }
+      })
+      
+      /*Nous pouvons utiliser la constante io pour le websocket*/
+      io.on('connection', (socket) => {
+        socket.on('disconnect', () => {
+          console.log(`user ${socket.id} disconnected`);
+          io.emit('notification', `Bye ${socket.id}`);
+        });
+      
+        console.log(`Connecté au client ${socket.id}`);
+        io.emit('notification', `Bonjour, ${socket.id}`);
+      
+        socket.on('chat', (message) => {
+          console.log(`Jai recu : ${message.data}` );
+      
+          io.emit('chat', message.data);
+        })
       })
       
 }
