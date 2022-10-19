@@ -71,7 +71,7 @@ module.exports = function (app, server) {
         .then(buckets => res.status(200).json(buckets))
         .catch(error => res.status(400).json({ error }));
       });
-    
+
       app.post('/message', (req, res, next) => {
     
         const message = new sMessage({...req.body});
