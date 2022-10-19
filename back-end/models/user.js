@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const user = mongoose.Schema({
+const userSchema = mongoose.Schema({
   customId: { type: String, required: true },
   name: { type: String, required: true }
 });
 
-module.exports = mongoose.model('Test', user);
+module.exports = mongoose.model('User', userSchema);
