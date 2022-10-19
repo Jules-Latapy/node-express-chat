@@ -35,6 +35,12 @@ module.exports = function (app, server) {
         .catch(error => res.status(400).json({ error }));
     })
 
+    app.get('/users/:id', (req, res, next) => {
+        sMessage.findOne({ _id: req.params.id })
+        .then(buckets => res.status(200).json(buckets))
+        .catch(error => res.status(400).json({ error }));
+      });
+
     app.post('/user', (req, res, next) => {
 
         const user = new sUser({...req.body});
@@ -47,8 +53,21 @@ module.exports = function (app, server) {
         })
       });
 
+      app.delete('/user/:id', (req, res, next) => {
+  
+        sUser.remove({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+          .then(() => res.status(200).json({ message: 'User Supprimé'}))
+          .catch(error => res.status(400).json({ error }));
+      })
+
       app.get('/messages', (req, res, next) => {
         sMessage.find()
+        .then(buckets => res.status(200).json(buckets))
+        .catch(error => res.status(400).json({ error }));
+      });
+
+      app.get('/messages/:id', (req, res, next) => {
+        sMessage.findOne({ _id: req.params.id })
         .then(buckets => res.status(200).json(buckets))
         .catch(error => res.status(400).json({ error }));
       });
@@ -64,6 +83,14 @@ module.exports = function (app, server) {
           res.status(400).json({error})
         })
       });
+
+      app.delete('/message/:id', (req, res, next) => {
+  
+        sMessage.remove({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+          .then(() => res.status(200).json({ message: 'Message Supprimé'}))
+          .catch(error => res.status(400).json({ error }));
+      })
+      
 }
 
 mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_URL}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
