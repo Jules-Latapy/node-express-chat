@@ -21,7 +21,7 @@ module.exports = function (app, server) {
     const io = require('socket.io')(server, {
         cors: {
             origin: "http://127.0.0.1:5000",
-            methods: ["GET", "POST"]
+            methods: ["GET", "POST", "PUT"]
         }
     })
 

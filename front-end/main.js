@@ -22,7 +22,7 @@ function sendMsg() {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
-        body: msg
+        body: JSON.stringify(msg)
     });
 
     addMsg(msg)
@@ -82,6 +82,18 @@ function addMsg(msg) {
     </li>`
 }
 
+function loadMsg() {
+
+    fetch(`${server}/messages/`, {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(msg)
+    });
+}
+
 (function () {
     const server = 'http://127.0.0.1:3000'
     const socket = io(server);
@@ -90,9 +102,12 @@ function addMsg(msg) {
         console.log('Message depuis le seveur:', data);
     })
 
-    fetch(`${server}/test`).then((res) => {
+    fetch(`${server}/messages`).then((res) => {
         return res.json()
     }).then((data) => {
         console.log(data);
+
+        for (let i in data.data)
+            addMsg(i);
     })
 })()
